@@ -4,12 +4,12 @@ import (
 	"math"
 )
 
-// Fund ...
+// Fund returns required fund with liquidity and number of outcomes.
 func Fund(liquidity float64, n int) float64 {
 	return liquidity * math.Log(float64(n))
 }
 
-// Liquidity ...
+// Liquidity returns liquidity with initial fund and number of outcomes.
 func Liquidity(fund float64, n int) float64 {
 	return fund / math.Log(float64(n))
 }
@@ -74,12 +74,12 @@ func lnsum(liquidity float64, shares []float64) float64 {
 //	return exp(liquidity, share) / sum
 //}
 
-// Cost LMSR cost
+// Cost returns market cost.
 func Cost(liquidity float64, shares []float64) float64 {
 	return liquidity * lnsum(liquidity, shares)
 }
 
-// CmpPrice compute price for all shares
+// CmpPrice computes price for all shares.
 func CmpPrice(liquidity float64, shares []float64) []float64 {
 	tmp, max := coefficient(liquidity, shares)
 	sum := shiftExpSum(max, tmp)
@@ -100,7 +100,7 @@ func CmpPrice(liquidity float64, shares []float64) []float64 {
 	return tmp*/
 }
 
-// Estimate estimate cost when buying or selling some shares
+// Estimate estimates cost when buying or selling some shares.
 func Estimate(liquidity float64, org []float64, outcome int, amount float64) float64 {
 	after := make([]float64, len(org))
 
@@ -111,7 +111,7 @@ func Estimate(liquidity float64, org []float64, outcome int, amount float64) flo
 	return Cost(liquidity, after) - Cost(liquidity, org)
 }
 
-// Volume return amount can buy how many volume
+// Volume returns volumes that amount can buy.
 func Volume(liquidity float64, org []float64, outcome int, amount float64) float64 {
 	a := math.Exp(amount/liquidity) - 1
 
